@@ -14,7 +14,7 @@ const menus = [
 function linkClass(active: boolean) {
   return twMerge(
     clsx(
-      'relative inline-block rounded-none px-3 py-2.5 text-sm font-medium transition-colors duration-300 motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
+      'relative inline-flex min-h-[44px] items-center rounded-none px-3 py-2 text-sm font-medium transition-colors duration-300 motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
       active ? 'text-primary' : 'text-muted-foreground hover:text-foreground',
     ),
   );
@@ -47,10 +47,20 @@ export default function MainNav({ currentPath }: { currentPath: string }) {
   const isHome = currentPath === '/';
   const isChangelog = currentPath.startsWith('/changelog');
 
+  const openMenu = menus.find((menu) => menu.key === open);
+
   return (
-    <nav aria-label="Sections" ref={rootRef} className="border-b border-border/60">
-      <ul className="mx-auto flex w-full max-w-[1536px] gap-1 overflow-x-auto px-4 sm:px-6 lg:px-8">
-        <li>
+    <nav
+      aria-label="Sections"
+      ref={rootRef}
+      className="mx-auto w-full max-w-[1536px] px-4 sm:px-6 lg:px-8"
+      onKeyDown={onMenuKeyDown}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) setOpen(null);
+      }}
+    >
+      <ul className="flex gap-1 overflow-x-auto md:overflow-visible">
+        <li className="shrink-0">
           <a href="/" aria-current={isHome ? 'page' : undefined} className={linkClass(isHome)}>
             Home
             {isHome && <ActiveBar />}
@@ -60,21 +70,21 @@ export default function MainNav({ currentPath }: { currentPath: string }) {
           const active = currentPath.startsWith(menu.base);
           const expanded = open === menu.key;
           return (
-            <li key={menu.key} className="relative" onKeyDown={onMenuKeyDown} onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setOpen(null); }}>
+            <li key={menu.key} className="relative shrink-0">
               <button
                 type="button"
                 aria-expanded={expanded}
                 aria-haspopup="true"
                 aria-current={active ? 'page' : undefined}
                 onClick={() => setOpen(expanded ? null : menu.key)}
-                className={twMerge(linkClass(active), 'inline-flex cursor-pointer items-center gap-1 border-0 bg-transparent')}
+                className={twMerge(linkClass(active), 'cursor-pointer gap-1 border-0 bg-transparent')}
               >
                 {menu.label}
                 <ChevronDown aria-hidden="true" className={twMerge('size-3.5 transition-transform duration-300 motion-reduce:transition-none', expanded && 'rotate-180')} />
                 {active && <ActiveBar />}
               </button>
               {expanded && (
-                <div className="absolute left-0 top-full z-50 w-80 rounded-none border border-border bg-popover p-1 shadow-md">
+                <div className="absolute left-0 top-full z-50 hidden w-80 rounded-none border border-border bg-popover p-1 shadow-md md:block">
                   <ul>
                     {menu.items.map((item) => (
                       <li key={item.path}>
@@ -94,13 +104,31 @@ export default function MainNav({ currentPath }: { currentPath: string }) {
             </li>
           );
         })}
-        <li>
+        <li className="shrink-0">
           <a href="/changelog" aria-current={isChangelog ? 'page' : undefined} className={linkClass(isChangelog)}>
             Changelog
             {isChangelog && <ActiveBar />}
           </a>
         </li>
       </ul>
+      {openMenu && (
+        <div className="border-t border-border bg-popover p-1 md:hidden">
+          <ul>
+            {openMenu.items.map((item) => (
+              <li key={item.path}>
+                <a
+                  href={item.path}
+                  onClick={() => setOpen(null)}
+                  className="block rounded-none px-3 py-2.5 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary hover:bg-accent"
+                >
+                  <span className="block text-sm font-medium text-foreground">{item.title}</span>
+                  <span className="block text-xs text-muted-foreground">{item.description}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </nav>
   );
 }

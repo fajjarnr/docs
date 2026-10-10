@@ -1,0 +1,73 @@
+---
+interface NavLeaf {
+  path: string;
+  title: string;
+}
+
+interface NavChild extends NavLeaf {
+  children?: NavLeaf[];
+}
+
+interface NavEntry extends NavLeaf {
+  children?: NavChild[];
+}
+
+interface Props {
+  sidebar: NavEntry[];
+  current: string;
+}
+
+const { sidebar, current } = Astro.props;
+
+const items: NavLeaf[] = [];
+for (const entry of sidebar) {
+  items.push({ path: entry.path, title: entry.title });
+  for (const child of entry.children ?? []) {
+    items.push({ path: child.path, title: child.title });
+    for (const grandchild of child.children ?? []) {
+      items.push({ path: grandchild.path, title: grandchild.title });
+    }
+  }
+}
+
+const index = items.findIndex((item) => item.path === current);
+const prev = index > 0 ? items[index - 1] : null;
+const next = index >= 0 && index < items.length - 1 ? items[index + 1] : null;
+---
+
+{prev || next ? (
+  <nav aria-label="Article" class="mt-10 grid grid-cols-2 gap-4 border-t border-border pt-6">
+    {prev ? (
+      <a
+        href={prev.path}
+        class="group flex items-start gap-2 rounded-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="mt-1 shrink-0 text-muted-foreground group-hover:text-primary">
+          <path d="M10 3 L5 8 L10 13" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span>
+          <span class="block text-xs uppercase tracking-wide text-muted-foreground">Previous</span>
+          <span class="font-medium text-foreground group-hover:text-primary">{prev.title}</span>
+        </span>
+      </a>
+    ) : (
+      <span />
+    )}
+    {next ? (
+      <a
+        href={next.path}
+        class="group flex items-start justify-end gap-2 text-right rounded-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+      >
+        <span>
+          <span class="block text-xs uppercase tracking-wide text-muted-foreground">Next</span>
+          <span class="font-medium text-foreground group-hover:text-primary">{next.title}</span>
+        </span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="mt-1 shrink-0 text-muted-foreground group-hover:text-primary">
+          <path d="M6 3 L11 8 L6 13" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+    ) : (
+      <span />
+    )}
+  </nav>
+) : null}

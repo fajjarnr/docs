@@ -1,10 +1,18 @@
 ---
 import ArticleLayout from './ArticleLayout.astro';
 import Feedback from './Feedback.astro';
+import PrevNext from './PrevNext.astro';
+
+interface SidebarChild {
+  path: string;
+  title: string;
+  children?: { path: string; title: string }[];
+}
 
 interface SidebarItem {
   path: string;
   title: string;
+  children?: SidebarChild[];
 }
 
 interface Heading {
@@ -26,5 +34,101 @@ const { sidebar, current, versions = [], headings = [], updated } = Astro.props;
 
 <ArticleLayout sidebar={sidebar} current={current} versions={versions} headings={headings} updated={updated}>
   <slot />
+  <PrevNext sidebar={sidebar} current={current} />
   <Feedback slot="feedback" />
 </ArticleLayout>
+
+<script is:inline data-mdx-copy>
+  (() => {
+    const LABEL = 'Copy';
+    const DONE = 'Copied';
+    async function copyText(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return;
+      } catch {}
+      const area = document.createElement('textarea');
+      area.value = text;
+      area.style.position = 'fixed';
+      area.style.opacity = '0';
+      document.body.appendChild(area);
+      area.select();
+      try { document.execCommand('copy'); } catch {}
+      area.remove();
+    }
+    function wire() {
+      document.querySelectorAll('.mdx-body pre').forEach((pre) => {
+        if (pre.closest('[data-copy-wired]')) return;
+        if (pre.parentElement && pre.parentElement.classList.contains('mdx-code-wrap')) return;
+        const wrap = document.createElement('div');
+        wrap.className = 'mdx-code-wrap';
+        pre.replaceWith(wrap);
+        wrap.appendChild(pre);
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'mdx-copy-btn';
+        btn.textContent = LABEL;
+        btn.setAttribute('aria-live', 'polite');
+        btn.addEventListener('click', async () => {
+          await copyText(pre.innerText);
+          btn.textContent = DONE;
+          window.setTimeout(() => { btn.textContent = LABEL; }, 2000);
+        });
+        wrap.appendChild(btn);
+      });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wire);
+    else wire();
+  })();
+</script>
+
+<script is:inline data-img-zoom>
+  (() => {
+    function open(img) {
+      const prevOverflow = document.body.style.overflow;
+      const overlay = document.createElement('div');
+      overlay.className = 'fixed inset-0 z-[60] flex items-center justify-center bg-black/80 p-4';
+      const full = document.createElement('img');
+      full.src = img.currentSrc || img.src;
+      full.alt = img.alt;
+      full.className = 'max-h-[90vh] max-w-[90vw] rounded-none';
+      const close = document.createElement('button');
+      close.type = 'button';
+      close.setAttribute('aria-label', 'Close image viewer');
+      close.className = 'absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-none bg-white text-black';
+      close.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16"/></svg>';
+      function done() {
+        overlay.remove();
+        document.body.style.overflow = prevOverflow;
+        document.removeEventListener('keydown', onKey);
+        img.focus();
+      }
+      function onKey(e) {
+        if (e.key === 'Escape') done();
+      }
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) done(); });
+      close.addEventListener('click', done);
+      overlay.appendChild(full);
+      overlay.appendChild(close);
+      document.body.appendChild(overlay);
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('keydown', onKey);
+      close.focus();
+    }
+    function wire() {
+      document.querySelectorAll('.mdx-body img').forEach((img) => {
+        if (img.hasAttribute('data-zoom-wired')) return;
+        img.setAttribute('data-zoom-wired', '');
+        img.setAttribute('tabindex', '0');
+        img.setAttribute('aria-label', 'View larger image');
+        img.style.cursor = 'zoom-in';
+        img.addEventListener('click', () => open(img));
+        img.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(img); }
+        });
+      });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wire);
+    else wire();
+  })();
+</script>

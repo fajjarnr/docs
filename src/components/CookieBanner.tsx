@@ -29,7 +29,7 @@ export default function CookieBanner() {
       role="dialog"
       aria-live="polite"
       aria-label="Cookie notice"
-      className="fixed bottom-4 left-4 right-4 z-50 mx-auto max-w-md rounded-none border border-border bg-card p-4 shadow-lg sm:left-auto sm:right-6 sm:w-full"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card p-4 shadow-lg sm:inset-x-auto sm:bottom-4 sm:right-6 sm:w-full sm:max-w-md sm:border"
     >
       <p className="text-sm font-semibold text-foreground">Cookies</p>
       <p className="mt-1 text-sm leading-6 text-muted-foreground">

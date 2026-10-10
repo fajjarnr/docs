@@ -42,7 +42,7 @@ const isGroup = (item: Item | SidebarGroup): item is SidebarGroup =>
   'children' in item && !!item.children?.length;
 
 const rowClass = (active: boolean, parentActive: boolean) =>
-  `flex items-center gap-2 rounded-none px-3 py-2 text-sm transition-colors duration-300 motion-reduce:transition-none ${
+  `flex min-h-11 items-center gap-2 rounded-none px-3 py-2 text-sm transition-colors duration-300 motion-reduce:transition-none md:min-h-0 ${
     active
       ? 'bg-accent font-semibold text-primary'
       : parentActive
@@ -54,7 +54,7 @@ const activeStyle = (active: boolean) =>
   active ? 'box-shadow: inset 2px 0 0 var(--primary);' : undefined;
 ---
 
-<nav aria-label="Page contents" class="w-72 shrink-0">
+<nav aria-label="Page contents" class="w-72 max-w-full shrink-0">
   <ul class="space-y-0.5">
     {
       items.map((item) => {

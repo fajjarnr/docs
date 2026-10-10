@@ -13,7 +13,7 @@ const tags = [...new Set(entries.map((entry) => entry.tag))];
       <span aria-hidden="true" class="mx-2">/</span>
       <span class="text-foreground">Changelog</span>
     </nav>
-    <h1 class="mt-4 text-4xl font-bold tracking-tight text-foreground">Changelog</h1>
+    <h1 class="mt-4 break-words text-4xl font-bold tracking-tight text-foreground">Changelog</h1>
     <p class="mt-2 text-sm text-muted-foreground">Tags: {tags.join(', ')}</p>
     <div class="mt-8 space-y-8">
       {
@@ -28,7 +28,7 @@ const tags = [...new Set(entries.map((entry) => entry.tag))];
                 {entry.tag}
               </span>
             </div>
-            <h2 class="mt-3 text-xl font-semibold text-card-foreground">{entry.title}</h2>
+            <h2 class="mt-3 break-words text-xl font-semibold text-card-foreground">{entry.title}</h2>
             <p class="mt-2 text-sm text-muted-foreground">{entry.body}</p>
           </article>
         ))

@@ -1,3 +1,4 @@
+.mdx-body { min-width: 0; max-width: 100%; overflow-wrap: break-word; }
 .mdx-body > :first-child { margin-top: 0; }
 .mdx-body h2 {
   margin-top: 2.5rem;
@@ -28,6 +29,8 @@
 .mdx-body img {
   margin-top: 1.5rem;
   width: 100%;
+  max-width: 100%;
+  height: auto;
   border: 1px solid var(--border);
 }
 .mdx-body ul, .mdx-body ol {
@@ -47,8 +50,12 @@
   color: var(--muted-foreground);
 }
 .mdx-body table {
+  display: block;
   margin-top: 1.5rem;
-  width: 100%;
+  max-width: 100%;
+  width: max-content;
+  min-width: 100%;
+  overflow-x: auto;
   border-collapse: collapse;
   font-size: 0.875rem;
 }
@@ -68,9 +75,11 @@
   font-size: 0.85em;
   background: var(--muted);
   padding: 0.15em 0.4em;
+  overflow-wrap: break-word;
 }
 .mdx-body pre {
   margin-top: 1rem;
+  max-width: 100%;
   overflow-x: auto;
   padding: 1rem;
   font-family: var(--font-mono, 'IBM Plex Mono', ui-monospace, monospace);
@@ -84,3 +93,22 @@
   background: #252121;
   color: #F5EFE9;
 }
+article img { max-width: 100%; height: auto; }
+article h1 { overflow-wrap: break-word; }
+.mdx-code-wrap { position: relative; margin-top: 1rem; max-width: 100%; }
+.mdx-code-wrap > pre { margin-top: 0; }
+.mdx-copy-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  border: 1px solid var(--border);
+  background: var(--card);
+  padding: 0.25rem 0.5rem;
+  font-family: var(--font-mono, 'IBM Plex Mono', ui-monospace, monospace);
+  font-size: 0.75rem;
+  line-height: 1.25;
+  color: var(--foreground);
+  cursor: pointer;
+}
+.mdx-copy-btn:hover { border-color: #FF8A00; }
+.mdx-copy-btn:focus-visible { outline: 2px solid #FF8A00; outline-offset: 2px; }
