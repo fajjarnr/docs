@@ -1,0 +1,40 @@
+---
+interface Heading {
+  slug: string;
+  text: string;
+  depth: number;
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props;
+const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{
+  items.length > 0 && (
+    <nav aria-label="On this page" class="hidden w-56 shrink-0 lg:block">
+      <div class="sticky top-32">
+        <p class="px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          On this page
+        </p>
+        <ul class="mt-2 space-y-0.5">
+          {items.map((item) => (
+            <li>
+              <a
+                href={`#${item.slug}`}
+                class={`block rounded-none px-3 py-1.5 text-sm transition-colors duration-300 motion-reduce:transition-none ${
+                  item.depth === 3 ? 'pl-6' : ''
+                } text-muted-foreground hover:text-primary`}
+              >
+                {item.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
+  )
+}

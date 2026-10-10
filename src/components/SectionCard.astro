@@ -1,0 +1,45 @@
+---
+import Motif from '@/components/Motif.astro';
+
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  motif?: 'arch' | 'hexagon' | 'grid' | 'wave' | 'diamond' | 'orbit';
+  placeholder?: boolean;
+  large?: boolean;
+}
+
+const { href, title, description, motif, placeholder = false, large = false } = Astro.props;
+---
+
+<a
+  href={href}
+  class={`group flex rounded-none border border-border bg-card transition-all duration-300 motion-reduce:transition-none hover:-translate-y-px hover:border-primary hover:shadow-md motion-reduce:hover:translate-y-0 ${
+    large ? 'flex-col gap-5 p-8' : 'flex-col gap-2 p-6'
+  }`}
+>
+  {
+    motif && (
+      <span
+        class={`text-primary ${large ? 'mb-1' : ''}`}
+      >
+        <Motif name={motif} class={large ? 'size-10' : 'size-8'} />
+      </span>
+    )
+  }
+  <span class="flex items-center gap-2">
+    <span class={`font-semibold text-card-foreground ${large ? 'text-xl' : 'text-base'}`}>
+      {title}
+    </span>
+    {placeholder && (
+      <span
+        class="rounded-none bg-accent px-2 py-0.5 text-xs font-medium uppercase tracking-wide text-placeholder-ink"
+        >placeholder</span
+      >
+    )}
+  </span>
+  <span class={`text-muted-foreground ${large ? 'text-base' : 'text-sm'}`}>
+    {description}
+  </span>
+</a>

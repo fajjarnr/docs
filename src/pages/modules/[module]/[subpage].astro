@@ -1,0 +1,60 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import ArticleShell from '@/components/ArticleShell.astro';
+import { getCollection, render } from 'astro:content';
+import { modules, moduleSubpages, moduleNav, versions } from '@/data/pages';
+import '@/components/markdown.css';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('subpages');
+  const bySlug = new Map(entries.map((e) => [e.id.replace(/\.mdx$/, ''), e]));
+  return modules.flatMap((module) => {
+    const slug = module.path.split('/').pop() ?? '';
+    return (moduleSubpages[slug] ?? []).map((sub) => {
+      const subSlug = sub.path.split('/').pop() ?? '';
+      return {
+        params: { module: slug, subpage: subSlug },
+        props: { module, sub, entry: bySlug.get(`${slug}-${subSlug}`) ?? null },
+      };
+    });
+  });
+}
+
+const { module, sub, entry } = Astro.props;
+
+const title = entry?.data.title ?? sub.title;
+const description = entry?.data.description ?? sub.description;
+const updated = entry?.data.updated ?? '2026-10-11';
+const heroImage = entry?.data.heroImage ?? '/images/module-topology.svg';
+
+const { Content } = entry ? await render(entry) : { Content: null };
+---
+
+<Layout title={`${title} | ${module.title} | Docs Fajar`}>
+  <ArticleShell
+    sidebar={moduleNav}
+    current={sub.path}
+    versions={[...versions]}
+    headings={[
+      { slug: 'overview', text: 'Overview', depth: 2 },
+      { slug: 'details', text: 'Details', depth: 2 },
+    ]}
+    updated={updated}
+  >
+    <nav aria-label="Breadcrumb" class="text-sm text-muted-foreground">
+      <a href="/modules" class="hover:text-foreground">Modules</a>
+      <span aria-hidden="true" class="mx-2">/</span>
+      <a href={module.path} class="hover:text-foreground">{module.title}</a>
+      <span aria-hidden="true" class="mx-2">/</span>
+      <span class="text-foreground">{title}</span>
+    </nav>
+    <h1 class="mt-4 text-4xl font-bold tracking-tight text-foreground">{title}</h1>
+    <p class="mt-6 text-muted-foreground">{description}</p>
+    <img src={heroImage} alt={`${module.title} ${title} diagram`} class="mt-6 w-full rounded-none border border-border" />
+    {Content && (
+      <div class="mdx-body mt-6">
+        <Content />
+      </div>
+    )}
+  </ArticleShell>
+</Layout>

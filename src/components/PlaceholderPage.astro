@@ -1,0 +1,20 @@
+---
+interface Props {
+  title: string;
+  section: string;
+  note: string;
+}
+
+const { title, section, note } = Astro.props;
+---
+
+<article class="mx-auto max-w-3xl py-16">
+  <p class="text-sm text-muted-foreground">{section}</p>
+  <h1 class="mt-2 text-4xl font-bold tracking-tight text-foreground">{title}</h1>
+  <p class="mt-6 rounded-none border border-border bg-muted p-4 text-sm text-muted-foreground">
+    {note}
+  </p>
+  <p class="mt-8 text-sm">
+    <a href="/" class="text-primary underline-offset-4 hover:underline">Back to home</a>
+  </p>
+</article>

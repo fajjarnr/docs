@@ -1,0 +1,55 @@
+---
+interface Props {
+  code: string;
+  lang?: string;
+}
+
+const { code, lang = 'text' } = Astro.props;
+const escaped = code
+  .replaceAll('&', '&amp;')
+  .replaceAll('<', '&lt;')
+  .replaceAll('>', '&gt;');
+---
+
+<figure class="overflow-hidden rounded-none border border-border bg-[#FFF2F0] dark:bg-[#252121]">
+  <div class="flex items-center justify-between gap-2 border-b border-border/60 px-3 py-1.5">
+    <span class="font-mono text-xs text-muted-foreground">{lang}</span>
+    <button
+      type="button"
+      data-copy-button
+      data-code={code}
+      class="rounded-none border border-border px-2 py-1 font-mono text-xs text-foreground transition-colors hover:bg-accent"
+    >
+      Copy
+    </button>
+  </div>
+  <pre class="overflow-x-auto p-4 font-mono text-sm leading-6 text-foreground"><code set:html={escaped} /></pre>
+</figure>
+
+<script is:inline>
+  (() => {
+    const onClick = async (event) => {
+      const button = event.target.closest('[data-copy-button]');
+      if (!button) return;
+      const code = button.getAttribute('data-code') ?? '';
+      try {
+        await navigator.clipboard.writeText(code);
+      } catch {
+        const area = document.createElement('textarea');
+        area.value = code;
+        document.body.appendChild(area);
+        area.select();
+        try {
+          document.execCommand('copy');
+        } catch {}
+        area.remove();
+      }
+      const original = button.textContent;
+      button.textContent = 'Copied';
+      window.setTimeout(() => {
+        button.textContent = original;
+      }, 1600);
+    };
+    document.addEventListener('click', onClick);
+  })();
+</script>

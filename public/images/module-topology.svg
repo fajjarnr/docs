@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" font-family="sans-serif">
+<rect width="1200" height="630" fill="#FFFFFF"/>
+<circle cx="300" cy="295" r="140" fill="none" stroke="#FF8A00" stroke-width="8"/>
+<circle cx="300" cy="295" r="90" fill="none" stroke="#DE6C00" stroke-width="6"/>
+<circle cx="300" cy="295" r="30" fill="#FF8A00"/>
+<circle cx="440" cy="295" r="16" fill="#DE6C00"/>
+<circle cx="300" cy="155" r="16" fill="#FF8A00"/>
+<rect x="580" y="180" width="500" height="270" fill="#FFF2F0" stroke="#FFC9C0" stroke-width="2"/>
+<text x="620" y="270" font-size="52" font-weight="bold" fill="#271917">Module Topology</text>
+<text x="620" y="320" font-size="26" fill="#9B5950">Dummy cover — services and links</text>
+<rect x="620" y="360" width="90" height="34" fill="none" stroke="#9B5950" stroke-width="2"/>
+<text x="632" y="385" font-size="20" letter-spacing="4" fill="#9B5950">DUMMY</text>
+<rect x=".5" y=".5" width="1199" height="629" fill="none" stroke="#FFC9C0" stroke-width="1"/>
+</svg>

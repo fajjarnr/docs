@@ -1,0 +1,209 @@
+---
+interface SidebarGrandchild {
+  path: string;
+  title: string;
+}
+
+interface SidebarChild {
+  path: string;
+  title: string;
+  children?: SidebarGrandchild[];
+}
+
+interface SidebarGroup {
+  path: string;
+  title: string;
+  icon: 'arch' | 'hexagon' | 'grid' | 'wave' | 'diamond' | 'orbit';
+  children?: SidebarChild[];
+}
+
+interface Item {
+  path: string;
+  title: string;
+}
+
+interface Props {
+  items: (Item | SidebarGroup)[];
+  current: string;
+}
+
+const { items, current } = Astro.props;
+
+const icons: Record<SidebarGroup['icon'], string> = {
+  arch: 'M4 28 L4 14 A12 12 0 0 1 28 14 L28 28 M10 28 L10 16 A6 6 0 0 1 22 16 L22 28',
+  hexagon: 'M16 3 L28 9.5 L28 22.5 L16 29 L4 22.5 L4 9.5 Z M16 10 L22 13.5 L22 20.5 L16 24 L10 20.5 L10 13.5 Z',
+  grid: 'M4 4 H12 V12 H4 Z M20 4 H28 V12 H20 Z M4 20 H12 V28 H4 Z M20 20 H28 V28 H20 Z',
+  wave: 'M3 20 C8 10, 11 26, 16 16 C21 6, 24 22, 29 12 M3 27 C8 17, 11 33, 16 23 C21 13, 24 29, 29 19',
+  diamond: 'M16 2 L30 16 L16 30 L2 16 Z M16 9 L23 16 L16 23 L9 16 Z',
+  orbit: 'M16 5 A11 11 0 1 1 15.9 5 M16 11 A5 5 0 1 0 15.9 11 M24 8 L29 3 M8 24 L3 29',
+};
+
+const isGroup = (item: Item | SidebarGroup): item is SidebarGroup =>
+  'children' in item && !!item.children?.length;
+
+const rowClass = (active: boolean, parentActive: boolean) =>
+  `flex items-center gap-2 rounded-none px-3 py-2 text-sm transition-colors duration-300 motion-reduce:transition-none ${
+    active
+      ? 'bg-accent font-semibold text-primary'
+      : parentActive
+        ? 'text-foreground hover:bg-accent/60'
+        : 'text-muted-foreground hover:bg-accent/60 hover:text-foreground'
+  }`;
+
+const activeStyle = (active: boolean) =>
+  active ? 'box-shadow: inset 2px 0 0 var(--primary);' : undefined;
+---
+
+<nav aria-label="Page contents" class="w-72 shrink-0">
+  <ul class="space-y-0.5">
+    {
+      items.map((item) => {
+        if (!isGroup(item)) {
+          const active = item.path === current;
+          return (
+            <li>
+              <a
+                href={item.path}
+                aria-current={active ? 'page' : undefined}
+                class={rowClass(active, false)}
+                style={activeStyle(active)}
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  aria-hidden="true"
+                  class="shrink-0"
+                >
+                  <path d="M3 8h10M8 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span class="min-w-0 truncate">{item.title}</span>
+              </a>
+            </li>
+          );
+        }
+
+        const parentActive = item.path === current;
+        const childActive = item.children!.some((c) => c.path === current);
+        const expanded = parentActive || current.startsWith(item.path + '/');
+        return (
+          <li>
+            <details class="group" open={expanded || undefined}>
+              <summary
+                class={`${rowClass(false, expanded)} cursor-pointer list-none [&::-webkit-details-marker]:hidden`}
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 32 32"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class="shrink-0"
+                >
+                  <path d={icons[item.icon]} />
+                </svg>
+                <span class="min-w-0 flex-1 truncate">{item.title}</span>
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 12 12"
+                  fill="none"
+                  aria-hidden="true"
+                  class="shrink-0 transition-transform duration-300 motion-reduce:transition-none group-open:rotate-90"
+                >
+                  <path d="M4 2 L8 6 L4 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </summary>
+              <ul class="ml-6 mt-0.5 space-y-0.5">
+                <li>
+                  <a
+                    href={item.path}
+                    aria-current={parentActive ? 'page' : undefined}
+                    class={`${rowClass(parentActive, false)} text-[13px]`}
+                    style={activeStyle(parentActive)}
+                  >
+                    <span class="min-w-0 truncate">{item.title}</span>
+                  </a>
+                </li>
+                {item.children!.map((child) => {
+                  if (!child.children?.length) {
+                    const active = child.path === current;
+                    return (
+                      <li>
+                        <a
+                          href={child.path}
+                          aria-current={active ? 'page' : undefined}
+                          class={`${rowClass(active, false)} text-[13px]`}
+                          style={activeStyle(active)}
+                        >
+                          <span class="min-w-0 truncate">{child.title}</span>
+                        </a>
+                      </li>
+                    );
+                  }
+                  const sub = current === child.path || current.startsWith(child.path + '/');
+                  const childActive = child.path === current;
+                  return (
+                    <li>
+                      <details class="group/sub" open={sub || undefined}>
+                        <summary
+                          class={`${rowClass(false, sub)} cursor-pointer list-none text-[13px] [&::-webkit-details-marker]:hidden`}
+                        >
+                          <span class="min-w-0 flex-1 truncate">{child.title}</span>
+                          <svg
+                            width="10"
+                            height="10"
+                            viewBox="0 0 12 12"
+                            fill="none"
+                            aria-hidden="true"
+                            class="shrink-0 transition-transform duration-300 motion-reduce:transition-none group-open/sub:rotate-90"
+                          >
+                            <path d="M4 2 L8 6 L4 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                          </svg>
+                        </summary>
+                        <ul class="ml-4 mt-0.5 space-y-0.5">
+                          <li>
+                            <a
+                              href={child.path}
+                              aria-current={childActive ? 'page' : undefined}
+                              class={`${rowClass(childActive, false)} text-[13px]`}
+                              style={activeStyle(childActive)}
+                            >
+                              <span class="min-w-0 truncate">{child.title}</span>
+                            </a>
+                          </li>
+                          {child.children!.map((g) => {
+                            const gActive = g.path === current;
+                            return (
+                              <li>
+                                <a
+                                  href={g.path}
+                                  aria-current={gActive ? 'page' : undefined}
+                                  class={`${rowClass(gActive, false)} text-[12px]`}
+                                  style={activeStyle(gActive)}
+                                >
+                                  <span class="min-w-0 truncate">{g.title}</span>
+                                </a>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </details>
+                    </li>
+                  );
+                })}
+              </ul>
+            </details>
+          </li>
+        );
+      })
+    }
+  </ul>
+</nav>

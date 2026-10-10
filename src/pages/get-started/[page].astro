@@ -1,0 +1,60 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import ArticleShell from '@/components/ArticleShell.astro';
+import VideoEmbed from '@/components/VideoEmbed.astro';
+import { getCollection, render } from 'astro:content';
+import { getStarted, versions } from '@/data/pages';
+import '@/components/markdown.css';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('get-started');
+  const bySlug = new Map(entries.map((e) => [e.id.replace(/\.mdx$/, ''), e]));
+  return getStarted.map((page) => {
+    const slug = page.path.split('/').pop() ?? '';
+    return { params: { page: slug }, props: { page, entry: bySlug.get(slug) ?? null } };
+  });
+}
+
+const { page, entry } = Astro.props;
+
+const title = entry?.data.title ?? page.title;
+const description = entry?.data.description ?? page.description;
+const updated = entry?.data.updated ?? page.updated ?? '2026-10-11';
+const heroImage = entry?.data.heroImage ?? page.heroImage;
+
+const { Content } = entry ? await render(entry) : { Content: null };
+---
+
+<Layout title={`${title} | Get started | Docs Fajar`}>
+  <ArticleShell
+    sidebar={getStarted}
+    current={page.path}
+    versions={[...versions]}
+    headings={[
+      { slug: 'overview', text: 'Overview', depth: 2 },
+      { slug: 'setup', text: 'Setup', depth: 2 },
+      { slug: 'example', text: 'Example', depth: 2 },
+      { slug: 'next-steps', text: 'Next steps', depth: 2 },
+    ]}
+    updated={updated}
+  >
+    <nav aria-label="Breadcrumb" class="text-sm text-muted-foreground">
+      <a href="/" class="hover:text-foreground">Get started</a>
+      <span aria-hidden="true" class="mx-2">/</span>
+      <span class="text-foreground">{title}</span>
+    </nav>
+    <h1 class="mt-4 text-4xl font-bold tracking-tight text-foreground">{title}</h1>
+    <p class="mt-6 text-muted-foreground">{description}</p>
+    {heroImage && (
+      <img src={heroImage} alt={`${title} diagram`} class="mt-6 w-full rounded-none border border-border" />
+    )}
+    <div class="mt-6">
+      <VideoEmbed id="aqz-KE-bpKQ" title="Dummy walkthrough video (placeholder)" />
+    </div>
+    {Content && (
+      <div class="mdx-body mt-6">
+        <Content />
+      </div>
+    )}
+  </ArticleShell>
+</Layout>

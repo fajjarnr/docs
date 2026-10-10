@@ -1,0 +1,30 @@
+---
+interface Props {
+  name: 'arch' | 'hexagon' | 'grid' | 'wave' | 'diamond' | 'orbit';
+  class?: string;
+}
+
+const { name, class: className } = Astro.props;
+
+const paths: Record<Props['name'], string> = {
+  arch: 'M4 28 L4 14 A12 12 0 0 1 28 14 L28 28 M10 28 L10 16 A6 6 0 0 1 22 16 L22 28',
+  hexagon: 'M16 3 L28 9.5 L28 22.5 L16 29 L4 22.5 L4 9.5 Z M16 10 L22 13.5 L22 20.5 L16 24 L10 20.5 L10 13.5 Z',
+  grid: 'M4 4 H12 V12 H4 Z M20 4 H28 V12 H20 Z M4 20 H12 V28 H4 Z M20 20 H28 V28 H20 Z',
+  wave: 'M3 20 C8 10, 11 26, 16 16 C21 6, 24 22, 29 12 M3 27 C8 17, 11 33, 16 23 C21 13, 24 29, 29 19',
+  diamond: 'M16 2 L30 16 L16 30 L2 16 Z M16 9 L23 16 L16 23 L9 16 Z',
+  orbit: 'M16 5 A11 11 0 1 1 15.9 5 M16 11 A5 5 0 1 0 15.9 11 M24 8 L29 3 M8 24 L3 29',
+};
+---
+
+<svg
+  viewBox="0 0 32 32"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  class={className}
+>
+  <path d={paths[name]} />
+</svg>

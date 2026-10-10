@@ -1,0 +1,45 @@
+---
+interface Props {
+  id: string;
+  title: string;
+}
+
+const { id, title } = Astro.props;
+const thumbnail = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+---
+<div data-yt-facade={id} class="relative aspect-video w-full overflow-hidden rounded-none border border-border bg-black">
+  <img src={thumbnail} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover" />
+  <span class="absolute inset-x-0 top-0 bg-black/70 px-3 py-2 text-left text-sm font-medium text-white">{title}</span>
+  <button
+    type="button"
+    data-yt-play
+    aria-label={`Play video: ${title}`}
+    class="absolute inset-0 flex w-full cursor-pointer items-center justify-center"
+  >
+    <span class="flex h-16 w-16 items-center justify-center rounded-none bg-[#FF8A00]">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="#1A1512" aria-hidden="true">
+        <path d="M7 4.5v15l13-7.5z"></path>
+      </svg>
+    </span>
+  </button>
+  <noscript>
+    <a href={`https://www.youtube.com/watch?v=${id}`}>{title} — watch on YouTube</a>
+  </noscript>
+</div>
+
+<script is:inline>
+  document.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-yt-facade] button');
+    if (!button) return;
+    const facade = button.closest('[data-yt-facade]');
+    const id = facade.getAttribute('data-yt-facade');
+    const label = facade.querySelector('button')?.getAttribute('aria-label') ?? 'Embedded video';
+    const frame = document.createElement('iframe');
+    frame.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0';
+    frame.title = label.replace(/^Play video:\s*/, '');
+    frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+    frame.allowFullscreen = true;
+    frame.className = 'absolute inset-0 h-full w-full';
+    facade.replaceChildren(frame);
+  });
+</script>

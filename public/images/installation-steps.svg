@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" font-family="sans-serif">
+<rect width="1200" height="630" fill="#FFFFFF"/>
+<rect x="120" y="215" width="110" height="110" fill="#FF8A00"/>
+<rect x="260" y="215" width="110" height="110" fill="none" stroke="#FF8A00" stroke-width="8"/>
+<rect x="400" y="215" width="110" height="110" fill="#DE6C00"/>
+<rect x="230" y="262" width="30" height="8" fill="#DE6C00"/>
+<rect x="370" y="262" width="30" height="8" fill="#FF8A00"/>
+<text x="140" y="390" font-size="30" font-weight="bold" fill="#271917">1</text>
+<text x="285" y="390" font-size="30" font-weight="bold" fill="#271917">2</text>
+<text x="425" y="390" font-size="30" font-weight="bold" fill="#271917">3</text>
+<rect x="580" y="180" width="500" height="270" fill="#FFF2F0" stroke="#FFC9C0" stroke-width="2"/>
+<text x="620" y="270" font-size="52" font-weight="bold" fill="#271917">Installation Steps</text>
+<text x="620" y="320" font-size="26" fill="#9B5950">Dummy cover — setup in three moves</text>
+<rect x="620" y="360" width="90" height="34" fill="none" stroke="#9B5950" stroke-width="2"/>
+<text x="632" y="385" font-size="20" letter-spacing="4" fill="#9B5950">DUMMY</text>
+<rect x=".5" y=".5" width="1199" height="629" fill="none" stroke="#FFC9C0" stroke-width="1"/>
+</svg>

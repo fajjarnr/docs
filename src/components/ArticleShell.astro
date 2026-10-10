@@ -1,0 +1,30 @@
+---
+import ArticleLayout from './ArticleLayout.astro';
+import Feedback from './Feedback.astro';
+
+interface SidebarItem {
+  path: string;
+  title: string;
+}
+
+interface Heading {
+  slug: string;
+  text: string;
+  depth: number;
+}
+
+interface Props {
+  sidebar: SidebarItem[];
+  current: string;
+  versions?: string[];
+  headings?: Heading[];
+  updated: string;
+}
+
+const { sidebar, current, versions = [], headings = [], updated } = Astro.props;
+---
+
+<ArticleLayout sidebar={sidebar} current={current} versions={versions} headings={headings} updated={updated}>
+  <slot />
+  <Feedback slot="feedback" />
+</ArticleLayout>

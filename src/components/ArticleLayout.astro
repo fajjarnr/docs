@@ -1,0 +1,57 @@
+---
+import Sidebar from '@/components/Sidebar.astro';
+import VersionSelector from '@/components/VersionSelector.astro';
+import Toc from '@/components/Toc.astro';
+
+interface SidebarItem {
+  path: string;
+  title: string;
+}
+
+interface Heading {
+  slug: string;
+  text: string;
+  depth: number;
+}
+
+interface Props {
+  sidebar: SidebarItem[];
+  current: string;
+  versions?: string[];
+  headings: Heading[];
+  updated: string;
+}
+
+const { sidebar, current, versions = [], headings, updated } = Astro.props;
+const selectedVersion = versions[0] ?? '';
+---
+
+<div class="flex gap-8 py-8">
+  <div class="hidden w-72 shrink-0 md:block">
+    <div class="sticky top-32 space-y-4">
+      {versions.length > 1 && <VersionSelector versions={versions} current={selectedVersion} />}
+      <Sidebar items={sidebar} current={current} />
+    </div>
+  </div>
+
+  <article class="w-full min-w-0 max-w-[768px] flex-1">
+    <details class="mb-6 rounded-none border border-border bg-card p-3 md:hidden">
+      <summary class="cursor-pointer text-sm font-semibold text-foreground">
+        Contents
+      </summary>
+      <div class="mt-3 space-y-4">
+        {versions.length > 1 && <VersionSelector versions={versions} current={selectedVersion} />}
+        <Sidebar items={sidebar} current={current} />
+      </div>
+    </details>
+
+    <slot />
+
+    <p class="mt-8 border-t border-border pt-4 text-sm text-muted-foreground">
+      Last updated {updated}
+    </p>
+    <slot name="feedback" />
+  </article>
+
+  <Toc headings={headings} />
+</div>

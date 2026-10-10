@@ -1,0 +1,124 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import SectionCard from '@/components/SectionCard.astro';
+import SearchBox from '@/components/SearchBox';
+import { buttonVariants } from '@/components/ui/button';
+import { getStarted, modules } from '@/data/pages';
+import { ClipboardCopy, Search, ShieldQuestion } from 'lucide-react';
+
+const motifs = ['arch', 'hexagon', 'grid', 'wave', 'orbit'] as const;
+
+const getStartedMotifs: Record<string, (typeof motifs)[number]> = {
+  '/get-started/quickstart': 'arch',
+  '/get-started/installation': 'hexagon',
+  '/get-started/core-concepts': 'orbit',
+  '/get-started/configuration': 'grid',
+  '/get-started/troubleshooting': 'wave',
+};
+
+const capabilities = [
+  {
+    Icon: ClipboardCopy,
+    title: 'Copyable precision',
+    description:
+      'Snippets and config values are monospaced and one click from the clipboard.',
+  },
+  {
+    Icon: Search,
+    title: 'Findable at depth',
+    description: 'A three-level tree and search keep hundreds of pages navigable.',
+  },
+  {
+    Icon: ShieldQuestion,
+    title: 'Placeholder honesty',
+    description:
+      'Empty and labeled beats invented. No fake content ships on this site.',
+  },
+];
+---
+
+<Layout>
+  <section class="mx-auto max-w-3xl py-16 text-center sm:py-20">
+    <h1 class="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">Docs Fajar</h1>
+    <p class="mt-3 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+      Sharing what took the longest to figure out.
+    </p>
+    <p class="mt-4 text-lg text-muted-foreground">
+      The new home of the documentation. Search it, or pick a module below.
+    </p>
+    <SearchBox id="hero-search" className="mx-auto mt-8 max-w-xl" />
+    <div class="mt-8">
+      <a href="/get-started/quickstart" class={buttonVariants({ size: 'lg' })}>
+        Start with the quickstart
+      </a>
+    </div>
+    <p class="mt-6 text-sm text-placeholder-ink">
+      Placeholder scaffold: section and module names stand in until real content ships.
+    </p>
+  </section>
+
+  <section class="border-t border-border py-12">
+    <h2 class="text-2xl font-semibold tracking-tight text-foreground">Get started</h2>
+    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        getStarted.map((card) => (
+          <SectionCard
+            href={card.path}
+            title={card.title}
+            description={card.description}
+            motif={getStartedMotifs[card.path]}
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="border-t border-border py-12">
+    <h2 class="text-2xl font-semibold tracking-tight text-foreground">Modules</h2>
+    <p class="mt-2 text-sm text-muted-foreground">
+      Reserved for the product modules this documentation will cover.
+    </p>
+    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-2">
+      {
+        modules.map((card, index) => (
+          <SectionCard
+            href={card.path}
+            title={card.title}
+            description={card.description}
+            motif={motifs[index % motifs.length]}
+            placeholder
+            large
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="border-t border-border py-12">
+    <h2 class="text-2xl font-semibold tracking-tight text-foreground">
+      What Docs Fajar can do for you
+    </h2>
+    <div class="mt-6 grid gap-4 sm:grid-cols-3">
+      {
+        capabilities.map((item) => (
+          <div class="rounded-none border border-border bg-card p-6">
+            <item.Icon class="size-6 text-primary" aria-hidden="true" />
+            <h3 class="mt-4 text-base font-semibold text-card-foreground">{item.title}</h3>
+            <p class="mt-2 text-sm text-muted-foreground">{item.description}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="border-t border-border py-12">
+    <h2 class="text-2xl font-semibold tracking-tight text-foreground">What's new?</h2>
+    <div class="mt-6 max-w-md">
+      <SectionCard
+        href="/changelog"
+        title="Changelog"
+        description="No entries yet. This page exists so the link resolves."
+      />
+    </div>
+  </section>
+</Layout>

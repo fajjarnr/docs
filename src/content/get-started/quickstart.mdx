@@ -1,0 +1,51 @@
+---
+title: Quickstart
+description: The fastest working path, end to end.
+updated: 2026-10-11
+heroImage: /images/quickstart-overview.svg
+section: Get started
+---
+
+import Callout from '@/components/Callout.astro';
+
+## Overview
+
+mdx-pilot-quickstart — this page renders from MDX. The fastest working path, end to end.
+
+![Quickstart dummy diagram](/images/quickstart-overview.svg)
+
+<Callout kind="info" title="Pilot note">
+This Callout is imported directly inside the MDX file — no central registry needed.
+</Callout>
+
+## Setup
+
+Get going with one config file:
+
+```bash
+gateway:
+  host: localhost
+  port: 8080
+  dummy_mode: true
+  log_level: info
+routes:
+  - path: /dummy
+    target: http://127.0.0.1:3000
+```
+
+## Example
+
+Placeholder values for layout only:
+
+```json
+{
+  "dummy": true,
+  "page": "scaffold",
+  "retries": 0,
+  "notes": "dummy placeholder config, not real behavior"
+}
+```
+
+## Next steps
+
+Continue to Installation for the ordered setup path.
