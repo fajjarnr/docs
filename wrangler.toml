@@ -1,6 +1,6 @@
 # Cloudflare Pages configuration (Direct Upload).
 # Build with Bun (`bun run build`), output lands in dist/,
 # deploy later with `bun run deploy` (wrangler pages deploy dist).
-name = "docs-fajar"
+name = "docs"
 pages_build_output_dir = "dist"
 compatibility_date = "2026-10-01"
