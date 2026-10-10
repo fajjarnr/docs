@@ -16,7 +16,7 @@ against the project name `docs-fajar`, which needs `bunx wrangler login` first.
 
 ## Users
 
-Inherited from the reference site being cloned (documentation.gravitee.io, audience confirmed by
+Inherited from the reference site being cloned (audience confirmed by
 its content structure): API developers and platform teams publishing, securing, and observing
 APIs across gateways, plus technical writers maintaining versioned module docs. The clone
 will serve the documentation audience of the owner's own product once real content replaces the
@@ -33,7 +33,7 @@ a user completes a technical setup task by reading, without contacting support.
 ## Positioning
 
 The mechanism a neighboring clone could not copy: a token-level design system measured from a
-live versioned Gravitee documentation site (colors, type scale, shell dimensions, component
+live versioned reference documentation site (colors, type scale, shell dimensions, component
 behavior) rather than approximated, plus content structure proven at that scale. It is a
 foundation to receive the owner's real product content, not a content product of its own.
 
@@ -55,8 +55,7 @@ sections and need stable URLs per article.
 - Optional, hidden until needed: version selector above the sidebar, multi-product tabs,
   assistant panel (structure only until a real assistant or stub is decided).
 - Brand is a neutral placeholder by owner decision: name and logo are placeholders; colors and
-  forms follow DESIGN.md. Gravitee brand assets (logo PNG variants, wordmark) stay out of
-  the UI.
+  forms follow DESIGN.md. Third-party brand assets (logo PNG variants, wordmark) stay out of
 - Constraints: no real content, statistics, testimonials, or compliance claims may be invented;
   every displayed claim needs a real source or stays out. No fabrication of the reference
   product's content as the owner's own.
@@ -72,13 +71,13 @@ placeholder when the owner supplies them.
 
 ## Evidence on Hand
 
-- DESIGN.md and .impeccable/design.json: tokens, ramps, components, and page-type recipes
-  measured from https://documentation.gravitee.io on 2026-10-11 via markup, CSS custom
+- DESIGN.md: tokens, ramps, components, and page-type recipes
+  measured from a reference documentation site on 2026-10-11 via markup, CSS custom
   properties, computed styles, and screenshots (home, module landing, article, changelog,
   versioned APIM 4.11 sub-site, mobile 390px).
-- Earlier reference: https://helpcenter.channable.com, same GitBook shell, different theme;
+- Earlier reference: same GitBook shell, different theme;
   contributed the card-forward home and changelog patterns. Its light-first cyan theme,
-  Montserrat, and blue-grey neutrals were replaced by the Gravitee direction.
+  Montserrat, and blue-grey neutrals were replaced by the chosen reference direction.
 - Original request on record: clone every page of the reference help center, capture the design
   concept, no code until DESIGN.md was complete.
 - Absences to respect: no real product content, no analytics, no user research for the owner's

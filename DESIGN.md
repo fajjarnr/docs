@@ -1,6 +1,6 @@
 ---
 name: "Docs Fajar"
-description: "Documentation design system cloned from documentation.gravitee.io: light-first, one orange signal, warm-tinted neutrals, Manrope plus IBM Plex Mono."
+description: "Documentation design system cloned from a reference documentation site: light-first, one orange signal, warm-tinted neutrals, Manrope plus IBM Plex Mono."
 colors:
   primary: "#FF8A00"
   primary-hover: "#DE6C00"
@@ -48,14 +48,14 @@ components:
   callout-info: { backgroundColor: "{colors.info-soft}", textColor: "{colors.info-ink}", rounded: "{rounded.md}" }
 ---
 
-# Design System: Docs Fajar (Gravitee system)
+# Design System: Docs Fajar (reference system)
 
 ## Overview
 
 **Creative North Star: "The Signal in the Light"**
 
-This system is cloned from the live Gravitee documentation (documentation.gravitee.io, a GitBook
-site carrying Gravitee's own theme configuration), observed on 2026-10-11 through markup, CSS
+This system is cloned from a reference documentation site (a GitBook
+site carrying the reference theme configuration), observed on 2026-10-11 through markup, CSS
 tokens, computed styles, and screenshots of every page type, including the versioned APIM 4.11
 sub-site. The stance: a bright reading room where one orange signal does all the wayfinding. Warm,
 red-tinted neutrals keep long reading calm in daylight; a true monospace carries every technical
@@ -72,7 +72,7 @@ of one product.
 ## Colors
 
 The palette is primary orange plus a warm red-tinted neutral ramp plus four semantic colors, all
-as 12-step scales (full ramps for both modes in `.impeccable/design.json`). Light values below
+as 12-step scales documented below. Light values below
 are the default; dark mode swaps in the values listed under "Dark mode".
 
 ### Primary
@@ -100,8 +100,8 @@ are the default; dark mode swaps in the values listed under "Dark mode".
 - **Danger** (#80004D light, #CB548D dark): error callouts and destructive states.
 
 ### Brand
-- The interface is deliberately quieter than the brand mark. Source brand assets (the Gravitee
-  docs logo PNG, light and white variants) are replaced by the Docs Fajar wordmark; no source
+- The interface is deliberately quieter than the brand mark. Source brand assets (third-party
+  logo files, light and white variants) are replaced by the Docs Fajar wordmark; no source
   logo colors enter the palette.
 
 ### Named Rules
@@ -254,7 +254,7 @@ hairline shadow.
   the only glow is the assistant panel.
 - **Don't** use pill-shaped buttons or cards; pills are not part of this form language.
 - **Don't** clone the earlier reference's light-first cyan system, Montserrat, or blue-grey
-  neutrals; those belong to the Channable direction this system replaced.
+  neutrals; those belong to the earlier reference direction this system replaced.
 - **Don't** swap Manrope for Montserrat or use Manrope as the monospace face.
 - **Don't** put statistics, testimonials, or compliance claims on the surface without a real
   source; the source help center shows none.
@@ -263,6 +263,6 @@ hairline shadow.
 
 ---
 
-Reference history: this file previously specified a Channable Help Center clone (light-first,
-Signal Cyan, Montserrat). The owner chose the Gravitee direction instead; the Channable system
+Reference history: this file previously specified an earlier help-center clone (light-first,
+Signal Cyan, Montserrat). The owner chose the reference direction instead; the earlier system
 is retained only as history and its values must not be reintroduced.
